@@ -1,18 +1,18 @@
-import { Outlet, Link } from 'react-router-dom'
+import { Outlet } from "react-router-dom";
 
-export default function Shell() {
+import Navbar from "@/components/layout/Navbar";
+
+export function Shell() {
   return (
-    <div className="min-h-dvh bg-gray-50 text-gray-900">
-      {/* NAVBAR PLACEHOLDER — add your navbar here later */}
-      <header className="border-b bg-white">
-        <nav className="mx-auto max-w-6xl flex items-center gap-6 p-4">
-          <Link to="/" className="font-semibold">BoardBased</Link>
-          <span className="text-gray-400">/* Navbar goes here */</span>
-        </nav>
-      </header>
-      <main className="mx-auto max-w-6xl p-6">
-        <Outlet />
+    <div className="flex min-h-screen flex-col bg-bb-dark-bg text-white">
+      <Navbar />
+      <main className="flex-1 w-full">
+        <div className="mx-auto w-full max-w-[1920px] px-4 py-8 md:px-8 lg:px-16">
+          <Outlet />
+        </div>
       </main>
     </div>
-  )
+  );
 }
+
+export default Shell;

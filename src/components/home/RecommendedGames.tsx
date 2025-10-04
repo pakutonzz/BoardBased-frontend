@@ -135,7 +135,7 @@ export default function RecommendedGames() {
                 {/* Left column: text block vertically centered */}
                 <div className="sm:col-span-2 flex">
                   <div className="flex flex-col justify-center gap-4 pl-16 pr-8 py-8 w-full">
-                    <div className="absolute top-8 left-8 text-white/95 text-6xl font-semibold">{activeIndex + 1}</div>
+                    <div className="absolute top-5 left-10 text-white/95 text-6xl font-semibold">{activeIndex + 1}</div>
 
                     <h3 className="text-white text-3xl md:text-4xl font-bold leading-tight">
                       {g.name}

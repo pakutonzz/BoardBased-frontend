@@ -5,11 +5,9 @@
 
 /* ========= Base tokens & globals ========= */
 @layer base {
-  /**
-   * HSL tokens used across the app
-   */
-  :root {
-    --background: 0 0% 100%;
+  /* HSL tokens used across the app */
+  :root {  
+    --background: 0 0% 30%;
     --foreground: 222.2 84% 4.9%;
 
     --card: 0 0% 100%;
@@ -54,6 +52,9 @@
     --bb-navbar-bg: 0 0% 20%;
     --bb-grey-300: 0 0% 84%;
     --bb-grey-600: 0 0% 43%;
+
+    /* Accent in RGB for shadows (orange-500 style) */
+    --accent-rgb: 249 115 22;
   }
 
   .dark {
@@ -95,12 +96,8 @@
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
-  /* ✅ set border color directly (avoids unknown `border-border` utility) */
-  *,
-  ::before,
-  ::after {
-    border-color: hsl(var(--border));
-  }
+  /* set border color globally */
+  *, ::before, ::after { border-color: hsl(var(--border)); }
 
   body {
     background-color: hsl(var(--bb-dark-bg));
@@ -111,31 +108,58 @@
   }
 }
 
-/* ========= Small helpers so you don't need Tailwind config for custom names ========= */
-@layer utilities {
-  .bg-bb-navbar-bg {
-    background-color: hsl(var(--bb-navbar-bg));
+/* ========= Components (reusable blocks) ========= */
+@layer components {
+  /* Section title + container (no @apply) */
+  .h-section {
+    font-size: 1.5rem;   /* ~text-2xl */
+    font-weight: 600;    /* ~font-semibold */
+    letter-spacing: .01em;
   }
-  .text-bb-orange {
-    color: hsl(var(--bb-orange));
-  }
-  .border-bb-grey-300 {
-    border-color: hsl(var(--bb-grey-300));
-  }
-  .text-bb-grey-600 {
-    color: hsl(var(--bb-grey-600));
-  }
-  .bg-bb-orange {
-    background-color: hsl(var(--bb-orange));
-  }
-  .accent-line {
-    height: 2px;
-    width: 100%;
+  .container-app {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 80rem;    /* ~max-w-7xl */
+    padding-left: 1rem;  /* ~px-4 sm:px-6 lg:px-8 */
+    padding-right: 1rem;
   }
 
-  /* optional: logo font alias used in your Navbar */
-  .font-oleo {
-    font-family: "Oleo Script", "Noto Sans Thai", ui-sans-serif, system-ui,
-      sans-serif;
+  /* Card pattern with orange glow + slight scale on hover */
+  .card {
+    border-radius: 0.75rem; /* rounded-xl */
+    border: 1px solid rgba(255, 255, 255, .08);
+    background: rgba(255, 255, 255, .04);
+    transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
   }
+  .card:hover {
+    transform: scale(1.03);
+    box-shadow: 0 12px 30px rgba(var(--accent-rgb) / 0.55);
+  }
+
+  /* Carousel dots for HomeHero */
+  .carousel-dots {
+    display: flex; gap: .5rem;
+    position: absolute; left: 50%; transform: translateX(-50%);
+    bottom: .75rem;
+  }
+  .carousel-dot {
+    width: .5rem; height: .5rem; border-radius: 9999px;
+    background: rgba(255,255,255,.4);
+    outline: 2px solid rgba(0,0,0,.2);
+  }
+  .carousel-dot.is-active { background: rgb(var(--accent-rgb)); }
+}
+
+
+/* ========= Utilities (small helpers) ========= */
+@layer utilities {
+  .bg-bb-navbar-bg { background-color: hsl(var(--bb-navbar-bg)); }
+  .text-bb-orange { color: hsl(var(--bb-orange)); }
+  .border-bb-grey-300 { border-color: hsl(var(--bb-grey-300)); }
+  .text-bb-grey-600 { color: hsl(var(--bb-grey-600)); }
+  .bg-bb-orange { background-color: hsl(var(--bb-orange)); }
+  .accent-line { height: 2px; width: 100%; }
+
+  /* logo font alias used in Navbar */
+  .font-oleo { font-family: "Oleo Script", "Noto Sans Thai", ui-sans-serif, system-ui, sans-serif; }
 }

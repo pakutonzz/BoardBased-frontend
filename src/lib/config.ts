@@ -1,3 +1,7 @@
+// src/app/lib/config.ts
+export const API_BASE =
+  import.meta.env.VITE_API_BASE ?? "https://boardbased-backend.onrender.com";
+
 interface ImportMetaEnv {
   readonly VITE_API_BASE?: string;
   readonly VITE_SITE_URL?: string;
@@ -10,14 +14,15 @@ declare global {
 }
 
 export const CONFIG = {
-  API_BASE: import.meta.env.VITE_API_BASE || '',
-  SITE_URL: import.meta.env.VITE_SITE_URL || 'http://127.0.0.1:8082',
-}
+  API_BASE: import.meta.env.VITE_API_BASE || "",
+  SITE_URL: import.meta.env.VITE_SITE_URL || "http://127.0.0.1:8082",
+};
+
 
 import type { Config } from "tailwindcss";
 import defaultTheme from "tailwindcss/defaultTheme";
 
-export default {
+export const tailwindConfig = {
   darkMode: "class",
   content: ["./index.html", "./src/**/*.{ts,tsx,js,jsx}"],
   theme: {
@@ -35,7 +40,7 @@ export default {
 
         primary: {
           DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
+            foreground: "hsl(var(--primary-foreground))",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",

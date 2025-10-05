@@ -19,6 +19,7 @@ type Game = { id: number; name: string; imageUrl?: string; averageRating?: strin
 export default function BoardGamesGrid() {
   const [items, setItems] = React.useState<Game[]>([])
   const [total, setTotal] = React.useState<number>(0)
+  const [currentEnd, setCurrentEnd] = React.useState<number>(0)
   const [rangeStart, setRangeStart] = React.useState(1)
   const [loading, setLoading] = React.useState(false)
   const [sortAZ, setSortAZ] = React.useState<null | boolean>(null) // null = API order
@@ -34,6 +35,7 @@ export default function BoardGamesGrid() {
         if (data.total !== undefined) {
           setTotal(data.total)
         }
+        setCurrentEnd(end)
         setItems(prev => {
           const seen = new Set(prev.map(x => x.id))
           const merged = [...prev]
@@ -56,7 +58,7 @@ export default function BoardGamesGrid() {
       <div className="flex items-center justify-between">
         <div>
           <h2 className="h-section">Board Games</h2>
-          <p className="text-sm text-gray-400 mt-1">Showing {items.length} of {total} games</p>
+          <p className="text-sm text-gray-400 mt-1">Showing {Math.min(currentEnd, total)} of {total} games</p>
         </div>
         <button
           onClick={() => setSortAZ(prev => prev === null ? true : !prev)}

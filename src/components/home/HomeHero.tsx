@@ -40,10 +40,7 @@ export default function HomeHero() {
             }`}
           />
         </Link>
-      ))}
-
-      {/* Overlay gradient */}
-      <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent pointer-events-none z-20" />
+      ))} 
 
       {/* Dots indicator */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-4 z-30">

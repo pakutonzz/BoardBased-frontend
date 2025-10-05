@@ -2,10 +2,10 @@ import { Link } from 'react-router-dom'
 import { ArrowRight } from 'lucide-react'
 
 const CATS = [
-  { key: 'adventure', name: 'Adventure',   img: '/home/category/adventure.png' },
-  { key: 'bluffing',  name: 'Bluffing',    img: '/home/category/bluffing.png' },
-  { key: 'party',     name: 'Party Games', img: '/home/category/party.png' },
-  { key: 'puzzle',    name: 'Puzzle',      img: '/home/category/puzzle.png' },
+  { key: 'Adventure', name: 'Adventure',   img: '/home/category/adventure.png' },
+  { key: 'Bluffing',  name: 'Bluffing',    img: '/home/category/bluffing.png' },
+  { key: 'Party Game',     name: 'Party Games', img: '/home/category/party.png' },
+  { key: 'Puzzle',    name: 'Puzzle',      img: '/home/category/puzzle.png' },
 ]
 
 export default function CategorySection() {
@@ -17,7 +17,7 @@ export default function CategorySection() {
         {CATS.map((cat) => (
           <Link
             key={cat.name}
-            to="/category"
+            to={`/category/${cat.key}`}
             className="group relative aspect-[377/196] rounded-lg overflow-hidden transition-transform hover:scale-105"
           >
             <img

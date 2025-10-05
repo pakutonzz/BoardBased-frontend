@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 
 const CSV_URL = "/boardgame.csv";
 
@@ -74,12 +75,12 @@ export default function CategoryPage() {
               <ul className="space-y-2">
                 {grouped[letter].map((name) => (
                   <li key={name}>
-                    <a
-                      href={`#/categories/${slugify(name)}`}
+                    <Link
+                      to={`/category/${slugify(name)}`}
                       className="text-[20px] font-normal text-white hover:text-orange-300 underline underline-offset-2 decoration-white/30"
                     >
                       {name}
-                    </a>
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -105,11 +106,8 @@ function groupByInitial(items: string[]) {
 }
 
 function slugify(s: string) {
-  return s
-    .toLowerCase()
-    .replace(/[^a-z0-9\s-]/g, "")
-    .trim()
-    .replace(/\s+/g, "-");
+  // Use encodeURIComponent to handle all special characters including slashes
+  return encodeURIComponent(s);
 }
 
 function parseCsv(text: string): string[][] {

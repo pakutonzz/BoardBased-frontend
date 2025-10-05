@@ -4,6 +4,8 @@ import HomePage from '@/pages/HomePage'
 import CrawlPage from '@/pages/CrawlPage'
 import DetailPage from '@/pages/DetailPage'
 import SettingsPage from '@/pages/SettingsPage'
+import CategoryPage from '@/pages/CategoryPage'
+
 
 export const router = createBrowserRouter([
   {
@@ -14,6 +16,7 @@ export const router = createBrowserRouter([
       { path: 'crawl', element: <CrawlPage /> },
       { path: 'detail/:id', element: <DetailPage /> },
       { path: 'settings', element: <SettingsPage /> },
+      { path: 'category', element: <CategoryPage />}
     ]
   }
 ])

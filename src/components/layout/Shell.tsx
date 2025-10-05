@@ -1,6 +1,60 @@
 import { Outlet, Link } from "react-router-dom";
+import Swal from "sweetalert2";
+import React from "react";
 
-export function Shell() {
+export default function Shell() {
+  const alertBeforedownloadCSV = async (
+    e?: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    e?.preventDefault();
+
+    const apiBase = "http://boardbased-backend.onrender.com";
+    let countHTML = "";
+    try {
+      const res = await fetch(`${apiBase}/board-games?pageSize=1`);
+      if (res.ok) {
+        const data = await res.json();
+        let total: number | undefined;
+        if (data && typeof data.total === "number") {
+          total = data.total;
+        } else if (data && typeof data.total === "string" && !isNaN(Number(data.total))) {
+          total = Number(data.total);
+        }
+        if (typeof total === "number") {
+          const formatted = total.toLocaleString();
+          countHTML = `<p>We currently have <b>${formatted}</b> board games collected.</p>`;
+        }
+      }
+    } catch {}
+
+    const result = await Swal.fire({
+      title: "Download the Board Games CSV?",
+      icon: "info",
+      html: `
+      <p>This export contains the <b>Board Games</b> sorted by category.</p>
+      <p>The CSV contains one game name per line.</p>
+      <p><i>Data was gathered with at least two levels of crawling.</i></p>
+      <hr>
+      ${countHTML || "<p>We have a large collection of board games ready for download.</p>"}
+      <p>Click <b>Download CSV</b> to start. This may take up to 3 minutes—please wait.</p>
+      `,
+      showCancelButton: true,
+      confirmButtonText: "Download CSV",
+      confirmButtonColor: "#F97316",
+      cancelButtonText: "Cancel",
+    });
+
+    if (result.isConfirmed) {
+      // trigger a programmatic download
+      const a = document.createElement("a");
+      a.href = "http://boardbased-backend.onrender.com/board-games/export.csv";
+      a.download = "http://boardbased-backend.onrender.com/board-games/export.csv";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    }
+  };
+
   return (
     <div className="min-h-dvh bg-[#383838] text-white font-noto">
       {/* NAVBAR */}
@@ -38,18 +92,19 @@ export function Shell() {
             </div>
           </div>
 
-          {/* Download CSV button */}
-          <a
-            href="/backend.csv"
-            download
+          {/* Download CSV button with confirm */}
+          <button
+            onClick={alertBeforedownloadCSV}
             className="ml-8 inline-flex h-[50px] w-[262px] items-center justify-center gap-3
              rounded-md bg-[#F97316] hover:brightness-110 active:brightness-90
              text-white shadow transition"
+            type="button"
+            aria-label="Download CSV"
           >
             <svg
               className="shrink-0"
-              width="24"
-              height="24"
+              width="28"
+              height="28"
               viewBox="0 0 24 24"
               fill="none"
               aria-hidden="true"
@@ -65,7 +120,7 @@ export function Shell() {
             <span className="text-[20px] font-semibold leading-none">
               Download CSV
             </span>
-          </a>
+          </button>
         </div>
       </header>
 
@@ -76,5 +131,3 @@ export function Shell() {
     </div>
   );
 }
-
-export default Shell;

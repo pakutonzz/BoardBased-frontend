@@ -167,12 +167,13 @@ export default function Shell() {
 
           {/* Search bar */}
           <div className="flex-1 flex justify-center">
-            <div className="relative w-[853px] h-[50px]">
+            <div className="relative w-full max-w-[853px] h-10 sm:h-12 md:h-[50px]">
               <input
-                type="text"
-                placeholder="Search"
-                value={query}
-                onChange={(e) => {
+              type="search"
+              aria-label="Search board games"
+              placeholder="Search"
+              value={query}
+              onChange={(e) => {
                   const v = e.target.value;
                   setQuery(v);
                   setOpen(!!v);

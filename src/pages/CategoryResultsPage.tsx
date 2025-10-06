@@ -27,8 +27,7 @@ export default function CategoryResultsPage() {
     async function run() {
       try {
         setLoad(true); setError(null)
-        const params = new URLSearchParams({ q: query ?? "", pageSize: String(pageSize ?? 20) });
-        const url = `${CONFIG.API_BASE}/board-games?q=${encodeURIComponent(query)}&pageSize=${pageSize}`;
+        const url = `${CONFIG.API_BASE}/board-games?pageSize=${pageSize}&category=${encodeURIComponent(decoded)}&sort=id:asc`
         const res = await fetch(url)
         if (!res.ok) throw new Error(`HTTP ${res.status}`)
         const data = await res.json()

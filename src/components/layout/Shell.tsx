@@ -57,10 +57,11 @@ function ratingOf(r: GameRow) {
 // ✅ Use proxy in dev, fall back to backend in prod
 async function fetchBoardGames(q: string, signal?: AbortSignal): Promise<ApiResponse> {
   const devUrl = `/api/board-games?q=${encodeURIComponent(q)}`;
-  const prodBase = (import.meta.env.VITE_BOARDBASED_API ?? "https://boardbased-backend.onrender.com").replace(/\/$/, "");
+  const prodBase = (import.meta.env.VITE_API_BASE ?? "https://boardbased-backend.onrender.com").replace(/\/$/, "");
   const prodUrl = `${prodBase}/board-games?q=${encodeURIComponent(q)}`;
 
-  const attempts = import.meta.env.DEV
+  const isDev = typeof window !== "undefined" && (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1");
+  const attempts = isDev
     ? [{ url: devUrl, init: { signal, cache: "no-store" as const } }]
     : [{ url: prodUrl, init: { signal, cache: "no-store" as const } }];
 
@@ -215,6 +216,31 @@ export default function Shell() {
                 </div>
               )}
             </div>
+          </div>
+          <div className="flex items-center gap-2">
+            {/* GitHub link — NEW */}
+            <a
+              href="https://github.com/pakutonzz/BoardBased-App"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Open GitHub repository"
+              className="inline-flex items-center gap-2 rounded-md border border-white/10 bg-white/5 px-3 py-2
+                        hover:bg-white/10 transition"
+            >
+              {/* GitHub mark (inline SVG, no library needed) */}
+              <svg viewBox="0 0 24 24" className="h-5 w-5 text-white" aria-hidden="true">
+                <path fill="currentColor" d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.11.79-.25.79-.56
+                0-.28-.01-1.02-.02-2-3.19.69-3.87-1.54-3.87-1.54-.53-1.36-1.29-1.72-1.29-1.72-1.06-.72.08-.71.08-.71
+                1.17.08 1.79 1.2 1.79 1.2 1.04 1.79 2.73 1.27 3.39.97.11-.76.41-1.27.75-1.56-2.55-.29-5.23-1.28-5.23-5.69
+                0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.47.11-3.06 0 0 .98-.31 3.2 1.18a11.1 11.1 0 0 1 5.83 0c2.22-1.49 3.2-1.18 3.2-1.18
+                .63 1.59.23 2.77.11 3.06.74.81 1.19 1.84 1.19 3.1 0 4.42-2.69 5.39-5.25 5.67.42.36.8 1.08.8 2.18 0 1.57-.01 2.84-.01 3.23
+                0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5Z"/>
+              </svg>
+              <span className="hidden sm:inline">GitHub</span>
+            </a>
+
+            {/* existing Download CSV button stays after this */}
+            {/* <YourDownloadCsvButton /> */}
           </div>
 
           {/* Download CSV button */}

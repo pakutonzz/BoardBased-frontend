@@ -1,12 +1,13 @@
-// src/app/lib/config.ts
+// BoardBased Frontend/src/lib/config.ts
+
+// src/lib/config.ts
 export const API_BASE =
-  import.meta.env.VITE_API_BASE ?? "https://boardbased-backend.onrender.com";
+  import.meta.env.VITE_API_BASE ?? "/api";
 
 interface ImportMetaEnv {
   readonly VITE_API_BASE?: string;
   readonly VITE_SITE_URL?: string;
 }
-
 declare global {
   interface ImportMeta {
     readonly env: ImportMetaEnv;
@@ -14,10 +15,13 @@ declare global {
 }
 
 export const CONFIG = {
-  API_BASE: import.meta.env.VITE_API_BASE || "",
-  SITE_URL: import.meta.env.VITE_SITE_URL || "http://127.0.0.1:8082",
+  API_BASE: import.meta.env.VITE_API_BASE || "/api",
+  SITE_URL:
+    import.meta.env.VITE_SITE_URL ||
+    (typeof window !== "undefined" ? window.location.origin : "http://127.0.0.1:8082"),
 };
 
+// ======================= Tailwind config =======================
 
 import type { Config } from "tailwindcss";
 import defaultTheme from "tailwindcss/defaultTheme";
@@ -40,7 +44,7 @@ export const tailwindConfig = {
 
         primary: {
           DEFAULT: "hsl(var(--primary))",
-            foreground: "hsl(var(--primary-foreground))",
+          foreground: "hsl(var(--primary-foreground))",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
@@ -85,6 +89,5 @@ export const tailwindConfig = {
       },
     },
   },
-  plugins: [], // keep or add your plugins (e.g., require("tailwindcss-animate"))
+  plugins: [], // add plugins if needed
 } satisfies Config;
-

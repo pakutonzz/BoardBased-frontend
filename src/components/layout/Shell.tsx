@@ -1,4 +1,5 @@
 import { Outlet, Link } from "react-router-dom";
+import { CONFIG } from "../../lib/config";
 import Swal from "sweetalert2";
 import React, { useCallback, useMemo, useRef, useState, useEffect } from "react";
 
@@ -54,37 +55,23 @@ function ratingOf(r: GameRow) {
   return Number.isFinite(n) ? n.toFixed(2) : "—";
 }
 
-// ✅ Use proxy in dev, fall back to backend in prod
+// ✅ Use CONFIG.API_BASE for API calls
 async function fetchBoardGames(q: string, signal?: AbortSignal): Promise<ApiResponse> {
-  const devUrl = `/api/board-games?q=${encodeURIComponent(q)}`;
-  const prodBase = (import.meta.env.VITE_API_BASE ?? "https://boardbased-backend.onrender.com").replace(/\/$/, "");
-  const prodUrl = `${prodBase}/board-games?q=${encodeURIComponent(q)}`;
-
-  const isDev = typeof window !== "undefined" && (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1");
-  const attempts = isDev
-    ? [{ url: devUrl, init: { signal, cache: "no-store" as const } }]
-    : [{ url: prodUrl, init: { signal, cache: "no-store" as const } }];
-
-  let lastErr: any;
-  for (const t of attempts) {
-    try {
-      const res = await fetch(t.url, t.init);
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      return await res.json();
-    } catch (e) {
-      lastErr = e;
-    }
-  }
-  throw lastErr;
+  const base = CONFIG.API_BASE.replace(/\/$/, "");
+  const url = `${base}/board-games?q=${encodeURIComponent(q)}&pageSize=10`;
+  const res = await fetch(url, { signal, cache: "no-store" });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return await res.json();
 }
 
 export default function Shell() {
   // 🔹 Alert for CSV download
   const alertBeforedownloadCSV = async (e?: React.MouseEvent<HTMLButtonElement>) => {
     e?.preventDefault();
+    const base = CONFIG.API_BASE.replace(/\/$/, "");
     let countHTML = "";
     try {
-      const res = await fetch("/api/board-games?pageSize=1", { cache: "no-store" });
+      const res = await fetch(`${base}/board-games?pageSize=1`, { cache: "no-store" });
       if (res.ok) {
         const data = await res.json();
         const total = Number(data?.total ?? 0);
@@ -113,7 +100,7 @@ export default function Shell() {
 
     if (result.isConfirmed) {
       const a = document.createElement("a");
-      a.href = "/api/board-games/export.csv";
+      a.href = `${base}/board-games/export.csv`;
       a.download = "board-games.csv";
       document.body.appendChild(a);
       a.click();

@@ -9,6 +9,7 @@
     "preview": "vite preview --host 127.0.0.1 --port 5175"
   },
   "dependencies": {
+    "cors": "^2.8.5",
     "i": "^0.3.7",
     "lucide-react": "^0.544.0",
     "react": "^18.3.1",

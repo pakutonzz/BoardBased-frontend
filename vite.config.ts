@@ -16,6 +16,7 @@ export default defineConfig({
         target: "https://boardbased-backend.onrender.com",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
+        secure: true,
       },
     },
     port: 8082,
